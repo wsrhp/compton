@@ -68,7 +68,7 @@ void PrimaryGeneratorAction::InitializeGPS()
   // set energy distribution
   G4SPSEneDistribution *eneDist = gps->GetCurrentSource()->GetEneDist() ;
   eneDist->SetEnergyDisType("Mono"); // or gauss
-  eneDist->SetMonoEnergy(10.0*MeV);  //默认10MeV
+  eneDist->SetMonoEnergy(100.0*MeV);  //默认10MeV
 
   // set position distribution
   /*
