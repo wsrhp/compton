@@ -1,0 +1,54 @@
+# $Id: vis.mac 32 2010-01-14 12:58:19Z adotti $
+#
+# Macro file for the initialization phase of "task2.cc"
+# when runing in interactive mode
+#
+# Sets some default verbose
+#
+/control/verbose 2
+/run/verbose 2
+#
+# Create a scene handler for a specific graphics system
+# (Edit the next line(s) to choose another graphics system)
+#OGLIQt 可以一次性显示
+#/vis/open OGLIX 600x600-0+0
+/vis/open OGLIQt 600x600-0+0
+#/vis/open OGL 600x600-0+0
+#/vis/open OGL
+#
+#/vis/open OGLIXm
+#####/vis/open OGLSXm
+####/vis/open HepRepXML
+#
+####/vis/open DAWNFILE
+#
+# draw scene
+#
+/tracking/verbose 1
+/vis/drawVolume
+
+/vis/viewer/set/viewpointThetaPhi 60 175 deg
+/vis/viewer/zoom 4.0
+/vis/scene/add/magneticField 100
+/vis/scene/add/trajectories smooth
+#/vis/modeling/trajectories/create/drawByCharge
+#/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+#/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
+
+#
+# for drawing the tracks
+# (if too many tracks cause core dump => /tracking/storeTrajectory 0)
+# for drawing the hits, uncomment next line
+#/vis/scene/add/hits
+# (if you prefer refreshing each event, comment out next line)
+/vis/scene/endOfEventAction accumulate
+/vis/viewer/set/autoRefresh true
+/control/execute icons.mac
+#刚好不蹭到边界飞出
+#/gps/ang/type user
+#/gps/hist/type theta
+#/gps/hist/point 0. 0.
+#/gps/hist/point 0.049 1.
+#/gps/hist/point 1. 0.
+/run/beamOn 10
+
