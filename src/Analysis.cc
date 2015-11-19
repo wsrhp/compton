@@ -64,7 +64,7 @@ Analysis::Analysis()
         particledata[i]=0.;
     }
     dataout[0] = false;
-    dataout[1] = true;
+    dataout[1] = false;
     dataout[2] = true;
     dataout[3] = true;  //需要修改这里的布尔值，确定每次保存gamma还是e-或e+
 
