@@ -38,12 +38,10 @@
 #include "PhysListEmStandard.hh"
 #include "PhysListEmLivermore.hh"
 #include "PhysListEmPenelope.hh"
+
 #include "G4LossTableManager.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4Scintillation.hh"
-#include "G4Cerenkov.hh"
-
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -52,7 +50,6 @@ PhysicsList::PhysicsList()
   fEmPhysicsList(0),
   fMessenger(0)
 {
-  //G4Cerenkov* cerenkovProcess = new G4Cerenkov("Cerenkov");
   G4LossTableManager::Instance();
   
   fCurrentDefaultCut   = 1.0*um;
@@ -60,16 +57,9 @@ PhysicsList::PhysicsList()
   fCutForElectron      = fCurrentDefaultCut;
   fCutForPositron      = fCurrentDefaultCut;
 
-  //G4Cerenkov::SetMaxNumPhotonsPerStep(20);
-  //G4Cerenkov::SetMaxBetaChangePerStep(10.0);
-  //G4Cerenkov::SetTrackSecondariesFirst(true);
-
-  //G4Scintillation::SetScintillationYieldFactor(1.);
-  //G4Scintillation::SetTrackSecondariesFirst(true);
-
   fMessenger = new PhysicsListMessenger(this);
-  fVerboseLebel=1;
-  SetVerboseLevel(fVerboseLebel);
+//  fVerboseLebel=0;
+//  SetVerboseLevel(fVerboseLebel);
 
   // EM physics
   fEmName = G4String("standard");
@@ -203,73 +193,7 @@ void PhysicsList::ConstructProcess()
   G4EmProcessOptions emOptions;
   emOptions.SetIntegral(false);
 
-  // 构建光学过程
-  ConstructOp();
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-#include "G4Threading.hh"
-#include "G4Cerenkov.hh"
-#include "G4Scintillation.hh"
-#include "G4OpAbsorption.hh"
-#include "G4OpRayleigh.hh"
-#include "G4OpMieHG.hh"
-#include "G4OpBoundaryProcess.hh"
-#include "G4ProcessManager.hh"
-
-void PhysicsList::ConstructOp()
-{
-  G4Cerenkov* cerenkovProcess = new G4Cerenkov("Cerenkov");
-  G4Scintillation* scintillationProcess = new G4Scintillation("Scintillation");
-  G4OpAbsorption* absorptionProcess = new G4OpAbsorption();
-  G4OpRayleigh* rayleighScatteringProcess = new G4OpRayleigh();
-  G4OpMieHG* mieHGScatteringProcess = new G4OpMieHG();
-  G4OpBoundaryProcess* boundaryProcess = new G4OpBoundaryProcess();
-
-  cerenkovProcess->SetVerboseLevel(fVerboseLebel);
-  scintillationProcess->SetVerboseLevel(fVerboseLebel);
-  absorptionProcess->SetVerboseLevel(fVerboseLebel);
-  rayleighScatteringProcess->SetVerboseLevel(fVerboseLebel);
-  mieHGScatteringProcess->SetVerboseLevel(fVerboseLebel);
-  boundaryProcess->SetVerboseLevel(fVerboseLebel);
-
-  // Use Birks Correction in the Scintillation process
-  if(!G4Threading::IsWorkerThread())
-  {
-    G4EmSaturation* emSaturation =
-              G4LossTableManager::Instance()->EmSaturation();
-    //G4Scintillation::AddSaturation(emSaturation);
-  }
-
-  theParticleIterator->reset();
-  while( (*theParticleIterator)() ){
-    G4ParticleDefinition* particle = theParticleIterator->value();
-    G4ProcessManager* pmanager = particle->GetProcessManager();
-    G4String particleName = particle->GetParticleName();
-    if (cerenkovProcess->IsApplicable(*particle)) {
-      pmanager->AddProcess(cerenkovProcess);
-      pmanager->SetProcessOrdering(cerenkovProcess,idxPostStep);
-    }
-    if (scintillationProcess->IsApplicable(*particle)) {
-      pmanager->AddProcess(scintillationProcess);
-      pmanager->SetProcessOrderingToLast(scintillationProcess, idxAtRest);
-      pmanager->SetProcessOrderingToLast(scintillationProcess, idxPostStep);
-    }
-    if (particleName == "opticalphoton") {
-      G4cout << " AddDiscreteProcess to OpticalPhoton " << G4endl;
-      pmanager->AddDiscreteProcess(absorptionProcess);
-      pmanager->AddDiscreteProcess(rayleighScatteringProcess);
-      pmanager->AddDiscreteProcess(mieHGScatteringProcess);
-      pmanager->AddDiscreteProcess(boundaryProcess);
-    }
-
-  }
-}
-void PhysicsList::SetNbOfPhotonsCerenkov(G4int MaxNumber)
-{
-  //G4Cerenkov::SetMaxNumPhotonsPerStep(MaxNumber);
-}
-
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -299,8 +223,8 @@ void PhysicsList::AddPhysicsList(const G4String& name)
                     
   } else {
     G4cout << "PhysicsList::AddPhysicsList: <" << name << ">"
-           << " is not defined"
-           << G4endl;
+           << " is not defined"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"<<"\n"
+          <<G4endl;
   }
 }
 

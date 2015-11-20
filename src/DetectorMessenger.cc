@@ -47,6 +47,7 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
  fDetDir(0),    
  fMaterCmd(0),
  fSizeCmd(0),
+ fRaduisCmd(0),
  fUpdateCmd(0)
 { 
   fTestemDir = new G4UIdirectory("/testem/");
@@ -60,12 +61,19 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
   fMaterCmd->SetParameterName("choice",false);
   fMaterCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
   
-  fSizeCmd = new G4UIcmdWithADoubleAndUnit("/testem/det/setSize",this);
+/*  fSizeCmd = new G4UIcmdWithADoubleAndUnit("/testem/det/setSize",this);
   fSizeCmd->SetGuidance("Set size of the box");
   fSizeCmd->SetParameterName("Size",false);
   fSizeCmd->SetRange("Size>0.");
   fSizeCmd->SetUnitCategory("Length");
-  fSizeCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  fSizeCmd->AvailableForStates(G4State_PreInit,G4State_Idle);*/
+  
+/*  fRaduisCmd = new G4UIcmdWithADoubleAndUnit("/testem/det/setDistance",this);
+  fRaduisCmd->SetGuidance("Set raduis of the detector");
+  fRaduisCmd->SetParameterName("Raduis",false);
+  fRaduisCmd->SetRange("Raduis>0.");
+  fRaduisCmd->SetUnitCategory("Length");
+  fRaduisCmd->AvailableForStates(G4State_PreInit,G4State_Idle);*/
     
   fUpdateCmd = new G4UIcmdWithoutParameter("/testem/det/update",this);
   fUpdateCmd->SetGuidance("Update calorimeter geometry.");
@@ -80,6 +88,7 @@ DetectorMessenger::~DetectorMessenger()
 {
   delete fMaterCmd;
   delete fSizeCmd; 
+  delete fRaduisCmd;
   delete fUpdateCmd;
   delete fDetDir;  
   delete fTestemDir;
@@ -92,8 +101,11 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
   if( command == fMaterCmd )
    { fDetector->SetMaterial(newValue);}
    
-  if( command == fSizeCmd )
-   { fDetector->SetSize(fSizeCmd->GetNewDoubleValue(newValue));}
+ // if( command == fSizeCmd )
+ //  { fDetector->SetSize(fSizeCmd->GetNewDoubleValue(newValue));}
+   
+ // if( command == fRaduisCmd )
+ //  { fDetector->SetDistance(fRaduisCmd->GetNewDoubleValue(newValue));}
      
   if( command == fUpdateCmd )
    { fDetector->UpdateGeometry(); }

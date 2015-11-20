@@ -35,15 +35,11 @@
 #define DetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
-#include "G4Cache.hh"
 #include "globals.hh"
 
 class G4LogicalVolume;
 class G4Material;
 class DetectorMessenger;
-class G4UniformMagField;
-class F01FieldSetup;
-
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -57,9 +53,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction
   public:
   
      virtual G4VPhysicalVolume* Construct();
-     virtual void ConstructSDandField();
      
-     void SetSize     (G4double);              
+     void SetSize     (G4double);   
+     void SetDistance    (G4double);           
      void SetMaterial (G4String);            
 
      void UpdateGeometry();
@@ -67,31 +63,44 @@ class DetectorConstruction : public G4VUserDetectorConstruction
   public:
   
      const
-     G4VPhysicalVolume* GetWorld()      {return physiWorld;};
+     G4VPhysicalVolume* GetWorld()      {return physiWorld;}
                     
-     G4double           GetSize()       {return targetsizez;};
-     G4Material*        GetMaterial()   {return targetMaterial;};
+     G4double           GetSize()       {return worldR;}
+     G4Material*        GetMaterial()   {return targetMaterial;}
      
      void               PrintParameters();
                        
   private:
-     G4Cache<F01FieldSetup*>    fEmFieldSetup;
      G4VPhysicalVolume * physiWorld;
      G4VPhysicalVolume*    physitarget;
      G4LogicalVolume*      logictarget;
-
-     G4LogicalVolume*      MboxLV;
      
      G4double                worldR;
 
-     G4double              targetsizex;
-     G4double              targetsizey;
-     G4double              targetsizez;
+  //   G4double              targetR;
+     G4double targetR;
+     G4double targetr ;
+     G4double targetz;
+
+     G4double detector1x ;
+     G4double detector1y ;
+     G4double detector1z ;
+
+     G4double detector2R ;
+     G4double detector2r ;
+     G4double detector2z;
+
+     G4double              startAngle;
+     G4double              spanningAngle;
+   //  G4double              detecposition;
+   //  G4double             dist;
+     
+     
+     
 
      G4Material*           targetMaterial;
      G4Material*            Air ;
      G4Material*            vacuum;
-     G4Material*            air;
      DetectorMessenger* fDetectorMessenger;
 
   private:

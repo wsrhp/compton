@@ -50,11 +50,11 @@ SteppingAction::~SteppingAction()
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
   //const G4StepPoint* endPoint = aStep->GetPostStepPoint();
-  //G4bool cometoboundary = (endPoint->GetStepStatus() == fWorldBoundary);//判断是不是离开了世界体
-  //if (cometoboundary)
-  //    {
+  //G4bool cometoboundary = (endPoint->GetStepStatus() == fWorldBoundary);
+ // if (cometoboundary)
+ //     {
        Analysis::GetInstance()->StepAction(aStep);
-  //}
+  //}                      //判断是否到达世界体边缘，如果是，就掉用endPonit&&sStep函数
 
 }
 

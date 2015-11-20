@@ -66,42 +66,27 @@ void PrimaryGeneratorAction::InitializeGPS()
   gps->GetCurrentSource()->SetParticleDefinition(pion);
 
   // set energy distribution
-  G4SPSEneDistribution *eneDist = gps->GetCurrentSource()->GetEneDist() ;
+/*  G4SPSEneDistribution *eneDist = gps->GetCurrentSource()->GetEneDist() ;
   eneDist->SetEnergyDisType("Mono"); // or gauss
-  eneDist->SetMonoEnergy(300.0*MeV);  //默认10MeV
+  eneDist->SetMonoEnergy(2.0*MeV);*/
 
   // set position distribution
-  /*
   G4double halfSize = 0.5*(fDetector->GetSize());
-  G4double z0 =  halfSize;
-  G4double x0 = 0.0*mm;
-  G4double y0 = 0.0*mm;
-  G4SPSPosDistribution *posDist = gps->GetCurrentSource()->GetPosDist();
-  posDist->SetPosDisType("Beam");  // or Point,Plane,Volume,Beam
-  posDist->SetCentreCoords(G4ThreeVector(x0,y0,z0));
-  posDist->SetBeamSigmaInX(0.1*mm);
-  posDist->SetBeamSigmaInY(0.1*mm);
-*/
-
-  //G4double z0 = -180.0*mm;
-  G4double z0 = -100.0*mm;
+  G4double z0 = halfSize;
   G4double x0 = 0.0*um;
   G4double y0 = 0.0*um;
   G4SPSPosDistribution *posDist = gps->GetCurrentSource()->GetPosDist();
-  posDist->SetPosDisType("Point");  // or Point,Plane,Volume,Beam
+  posDist->SetPosDisType("Plane");  // or Point,Plane,Volume,Beam
   posDist->SetCentreCoords(G4ThreeVector(x0,y0,z0));
-/*  posDist->SetPosDisShape("Circle");
-  posDist->SetRadius(1.0*um);
-  posDist->SetBeamSigmaInR(0.0*mm);*/
-
+  posDist->SetPosDisShape("Circle");
+  posDist->SetRadius(3.0*cm);
+  posDist->SetBeamSigmaInR(0.0*mm);
 
   // set angular distribution
   G4SPSAngDistribution *angDist = gps->GetCurrentSource()->GetAngDist();
-  angDist->SetParticleMomentumDirection( G4ThreeVector(0., 0., 1.) );
-  //angDist->SetAngDistType("usr");
-  /*angDist->SetAngDistType("beam2d");
-  angDist->SetBeamSigmaInAngX(0.1*mrad);
-  angDist->SetBeamSigmaInAngY(0.1*mrad);
+  angDist->SetParticleMomentumDirection( G4ThreeVector(0., 0., -1.) );
+  angDist->SetAngDistType("beam2d");
+  angDist->SetBeamSigmaInAngX(0*mrad);
+  angDist->SetBeamSigmaInAngY(0*mrad);
   angDist->DefineAngRefAxes("angref1",G4ThreeVector(1.,0.,0.));
-  */
 }

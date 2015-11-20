@@ -57,14 +57,12 @@ class PhysicsList: public G4VModularPhysicsList
     virtual void ConstructProcess();
     void AddPhysicsList(const G4String& name);
 
-    void ConstructOp();
 
     virtual void SetCuts();
     void SetCutForGamma(G4double);
     void SetCutForElectron(G4double);
     void SetCutForPositron(G4double);
-    void SetNbOfPhotonsCerenkov(G4int MaxNumber);
-  private:
+private:
     G4double fCutForGamma;
     G4double fCutForElectron;
     G4double fCutForPositron;
