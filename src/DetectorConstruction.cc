@@ -288,7 +288,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
   G4double IPDetectorx=36.0*mm;
   G4double IPDetectory=2.0*mm;
-  G4double IPDetectorz=175.0*mm;
+  G4double IPDetectorz=179.0*mm;
   G4RotationMatrix* rot = new G4RotationMatrix();
   G4RotationMatrix* rot1 = new G4RotationMatrix();
   rot->rotateX(-31.4849*deg);
