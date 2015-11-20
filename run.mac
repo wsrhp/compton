@@ -1,0 +1,26 @@
+#
+/control/verbose 1
+/run/verbose 0
+
+#/control/execute Linearbeam.mac
+/control/execute Guassbeam.mac
+#
+/testem/det/setMat Tungsten
+/testem/det/setSize 5.0 mm
+#
+#/testem/phys/addPhysics livermore
+/testem/phys/addPhysics penelope
+#/testem/phys/addPhysics standard
+#
+/run/initialize
+#
+/testem/phys/setCuts 10 um
+#/process/inactivate phot
+#/process/inactivate compt
+#/process/inactivate conv
+#/process/inactivate eIoni
+#/process/inactivate eBrem
+/process/inactivate GammaToMuPair
+
+#/run/setCut 10 nm
+#/run/beamOn 100000

@@ -1,0 +1,31 @@
+#
+/control/verbose 1
+/run/verbose 0
+
+#/control/execute Linearbeam.mac
+#/control/execute Guassbeam.mac
+#
+/testem/det/setMat Gold
+/testem/det/setSize 10 um
+#
+#/testem/phys/addPhysics livermore
+#/testem/phys/addPhysics penelope
+#/testem/phys/addPhysics standard
+#
+#/run/initialize
+#
+
+/testem/phys/setCuts 10 um
+/gps/ene/type Arb
+/gps/hist/file Maxwell-100.dat
+/gps/hist/inter Lin
+
+#/process/inactivate phot
+#/process/inactivate compt
+#/process/inactivate conv
+#/process/inactivate eIoni
+#/process/inactivate eBrem
+#/process/inactivate GammaToMuPair
+
+#/run/setCut 10 nm
+/run/beamOn 100000000
