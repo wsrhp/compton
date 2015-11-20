@@ -21,6 +21,7 @@
 #include "G4ProductionCuts.hh"
 #include "G4VProcess.hh"
 #include "G4StepPoint.hh"
+#include "PrimaryGeneratorAction.hh"
 
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
@@ -58,15 +59,16 @@ Analysis::Analysis()
     sgamatree=0;
     RootfileName="spectrum.root";
     percentOfEvent=1;//必须将其初始化为1
+    numOfPenetrate=0;
     numOfEventnow=0;
     numOfEventtotal=0;
     for(G4int i=0;i<4;i++){
         particledata[i]=0.;
     }
     dataout[0] = false;
-    dataout[1] = false;
-    dataout[2] = true;
-    dataout[3] = true;  //需要修改这里的布尔值，确定每次保存gamma还是e-或e+
+    dataout[1] = true;
+    dataout[2] = false;
+    dataout[3] = false;  //需要修改这里的布尔值，确定每次保存gamma还是e-或e+
 
 }
 
@@ -127,10 +129,6 @@ void Analysis::StepAction(const G4Step* astep)
 
        G4String volPre = pre->GetPhysicalVolume()->GetName();
        G4String volPost = post->GetPhysicalVolume()->GetName();
-     if(volPost=="Ctube"){
-         track->SetTrackStatus(fKillTrackAndSecondaries);
-         //track->SetTrackStatus(fKillTrackAndSecondaries);
-     }
 
     G4String  particlename=  track->GetParticleDefinition()->GetParticleName();//得到粒子名称
 
@@ -145,22 +143,24 @@ void Analysis::StepAction(const G4Step* astep)
     particledata[1] = position.getX();
     particledata[2] = position.getY();
     particledata[3] = position.getZ();
+    
 
 
     if (track->GetParentID() == 0){
         if(particlename=="gamma" && dataout[0]){   pgamatree->Fill(); }
-        if(particlename=="e-" && dataout[1]&& (volPre=="Mbox" && volPost=="IPDetector")){
+        if(particlename=="e-" && dataout[1]&& (volPre=="World" && volPost=="IPDetector")){
             //TotalEnergy += particledata[0];
-            static ofstream ofile("pe-position.txt",ios_base::out);
-            ofile<<particledata[1]<<"\t"<<particledata[2]<<"\t"<<particledata[3]<<"\t"<<endl;
-            pelectree->Fill();}
+            numOfPenetrate=numOfPenetrate+1;
+            static ofstream ofile("Position.txt",ios_base::out);
+            ofile<<particledata[2]<<"\t"<<endl;}
+         //   pelectree->Fill();}
     }
     else
     {
         //G4String  process = track->GetCreatorProcess()->GetProcessName();//得到此轨道产生的物理过程
         //ofstream ofile("process.txt",ios_base::out);
         //ofile<<process<<"\t"<<endl;
-        if(particlename=="e+" && dataout[2]&& (volPre=="Mbox" && volPost=="IPDetector1")){
+        if(particlename=="e+" && dataout[2]&& (volPre=="Mbox" && volPost=="IPDetector")){
             static ofstream ofile("e+position.txt",ios_base::out);
             ofile<<particledata[1]<<"\t"<<particledata[2]<<"\t"<<particledata[3]<<"\t"<<endl;
             sgamatree->Fill();}
@@ -168,8 +168,9 @@ void Analysis::StepAction(const G4Step* astep)
             static ofstream ofile("e-position.txt",ios_base::out);
             ofile<<particledata[1]<<"\t"<<particledata[2]<<"\t"<<particledata[3]<<"\t"<<endl;
             selectree->Fill();}
-    }
+    
 #endif
+}
 }
 
 void Analysis::EndOfEvent(const G4Event* /*anEvent*/)
@@ -201,6 +202,8 @@ void Analysis::EndOfRun(const G4Run* /*aRun*/)
 {
     // Writing and closing the ROOT file
 #ifdef G4ANALYSIS_USE_ROOT
+    ofstream ofile("numOfPenetrate.txt",ios_base::out);
+    ofile<<"Number of Penetrated electrons is "<<numOfPenetrate<<endl;
     G4cout << "ROOT: files writed." << G4endl;
     //    myROOTfile->Write();
     G4cout << "ROOT: files closed." << G4endl;

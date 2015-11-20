@@ -64,7 +64,7 @@ DetectorConstruction::DetectorConstruction()
 :G4VUserDetectorConstruction(),physiWorld(0), targetMaterial(0),
  fDetectorMessenger(0)
 {
-    worldR =        30.*cm;
+    worldR =        500.*cm;
     targetsizex = 10.0*mm;
     targetsizey = 10.0*mm;
     targetsizez = 2.0*mm;
@@ -191,7 +191,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   G4LogicalVolumeStore::GetInstance()->Clean();
   G4SolidStore::GetInstance()->Clean();
 
-  G4Orb * solidWorld= new G4Orb("world",worldR);
+  G4Orb * solidWorld= new G4Orb("World",worldR);
   G4LogicalVolume*      logicWorld= new G4LogicalVolume( solidWorld, vacuum, "World", 0, 0, 0);
     physiWorld = new G4PVPlacement(0,G4ThreeVector(), /*at (0,0,0)*/
                                                      logicWorld, "World",0,false,0);
@@ -199,6 +199,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   // Get materials
 
     G4Material* CtubeMaterial = G4Material::GetMaterial("Lead");
+    G4Material* BlockMaterial = G4Material::GetMaterial("Lead");
     G4Material* CtubeMaterial_1 = G4Material::GetMaterial("Lead");
     G4Material* IPDetectorMaterial = G4Material::GetMaterial("Lead");
   //  Must place the World Physical volume unrotated at (0,0,0).
@@ -268,14 +269,14 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   //---------------------------磁场区域Mbox-------------------------------------
 
     G4double Mboxx=40.0*mm;
-    G4double Mboxy=240.0*mm;
-    G4double Mboxz=155.0*mm;
+    G4double Mboxy=210.0*mm;
+    G4double Mboxz=60.0*mm;
     G4Box*   Mbox = new G4Box("Mbox",                        //its name
                      Mboxx/2,Mboxy/2,Mboxz/2);  //its dimensions
     MboxLV= new G4LogicalVolume( Mbox, vacuum, "Mbox");
     new G4PVPlacement(
                 0,                // no rotation
-                G4ThreeVector(0.,0.,2.5*mm),  // at (0,0,0)
+                G4ThreeVector(0.,0.,-45.0*mm),  // at (0,0,0)
                 MboxLV,          // its logical volume
                 "Mbox",    // its name
                 logicWorld,          // its mother  volume
@@ -288,11 +289,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
   G4double IPDetectorx=36.0*mm;
   G4double IPDetectory=2.0*mm;
-  G4double IPDetectorz=179.0*mm;
+  G4double IPDetectorz=700.0*mm;
   G4RotationMatrix* rot = new G4RotationMatrix();
-  G4RotationMatrix* rot1 = new G4RotationMatrix();
-  rot->rotateX(-31.4849*deg);
-  rot1->rotateX(31.4849*deg);
+  rot->rotateX(90*deg);
 
 
   G4Box*   IPDetector = new G4Box("IPDetector",                        //its name
@@ -305,31 +304,38 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
   new G4PVPlacement(
                            rot,                         //rotation
-                           G4ThreeVector(0.,-64.*mm,1.75*mm),            //at (0,0,0)
+                           G4ThreeVector(0.,0.*mm,385.0*mm),            //at (0,0,0)
                            logicIPDetector,                      //its logical volume
                            "IPDetector",       //its name
-                           //logicWorld,                          //its mother  volume
-                           MboxLV,                          //its mother  volume
+                           logicWorld,                          //its mother  volume
+                           //MboxLV,                          //its mother  volume
                            false,                      //no boolean operation
                            0);                         //copy number
-//-----------------------------------------------------------------------
-  G4Box*   IPDetector1 = new G4Box("IPDetector1",                        //its name
-                   IPDetectorx/2,IPDetectory/2,IPDetectorz/2);  //its dimensions
+
+  //---------------------------阻挡板Block----------------------------------
 
 
-  G4LogicalVolume* logicIPDetector1 = new G4LogicalVolume(IPDetector1,                    //its shape
-                             vacuum,                //its material
-                             "IPDetector1");    //its name
+/*  G4double Blockz=10.0*mm;
+
+
+  G4Box*   Block = new G4Box("Block",                        //its name
+                   IPDetectorx/2,IPDetectory/2,Blockz/2);  //its dimensions
+
+
+  G4LogicalVolume* logicBlock = new G4LogicalVolume(IPDetector,                    //its shape
+                             BlockMaterial,                //its material
+                             "Block");    //its name
 
   new G4PVPlacement(
-                           rot1,                         //rotation
-                           G4ThreeVector(0.,64.*mm,1.75*mm),            //at (0,0,0)
-                           logicIPDetector1,                      //its logical volume
-                           "IPDetector1",       //its name
-                           //logicWorld,                          //its mother  volume
-                           MboxLV,                          //its mother  volume
+                           rot,                         //rotation
+                           G4ThreeVector(0.,0.*mm,150.0*mm),            //at (0,0,0)
+                           logicBlock,                      //its logical volume
+                           "Block",       //its name
+                           logicWorld,                          //its mother  volume
+                           //MboxLV,                          //its mother  volume
                            false,                      //no boolean operation
-                           0);                         //copy number
+                           0);                         //copy number*/
+
 
 
 

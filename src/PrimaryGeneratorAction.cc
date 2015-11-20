@@ -62,13 +62,13 @@ void PrimaryGeneratorAction::InitializeGPS()
     //以下所有的GPS信息均可以通过gps.mac文件改变的。只是初始化这样而已。
     // particle type
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4ParticleDefinition* pion = particleTable->FindParticle("gamma");
+  G4ParticleDefinition* pion = particleTable->FindParticle("e-");
   gps->GetCurrentSource()->SetParticleDefinition(pion);
 
   // set energy distribution
   G4SPSEneDistribution *eneDist = gps->GetCurrentSource()->GetEneDist() ;
   eneDist->SetEnergyDisType("Mono"); // or gauss
-  eneDist->SetMonoEnergy(100.0*MeV);  //默认10MeV
+  eneDist->SetMonoEnergy(300.0*MeV);  //默认10MeV
 
   // set position distribution
   /*
@@ -84,15 +84,15 @@ void PrimaryGeneratorAction::InitializeGPS()
 */
 
   //G4double z0 = -180.0*mm;
-  G4double z0 = -180.0*mm;
+  G4double z0 = -100.0*mm;
   G4double x0 = 0.0*um;
   G4double y0 = 0.0*um;
   G4SPSPosDistribution *posDist = gps->GetCurrentSource()->GetPosDist();
-  posDist->SetPosDisType("Plane");  // or Point,Plane,Volume,Beam
+  posDist->SetPosDisType("Point");  // or Point,Plane,Volume,Beam
   posDist->SetCentreCoords(G4ThreeVector(x0,y0,z0));
-  posDist->SetPosDisShape("Circle");
-  posDist->SetRadius(5.0*mm);
-  posDist->SetBeamSigmaInR(0.0*mm);
+/*  posDist->SetPosDisShape("Circle");
+  posDist->SetRadius(1.0*um);
+  posDist->SetBeamSigmaInR(0.0*mm);*/
 
 
   // set angular distribution

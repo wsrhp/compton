@@ -51,6 +51,7 @@ private:
 
     G4long numOfEventnow;
     G4long numOfEventtotal;
+    G4long numOfPenetrate;
     G4int percentOfEvent;//目前运行了多少百分比的event，以%为单位
 
     // ROOT objects

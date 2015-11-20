@@ -298,22 +298,22 @@ void F01FieldSetup::SetFieldValue(G4ThreeVector fieldVector)
 void F01FieldSetup::GetFieldValue(const G4double Point[3],G4double* Bfield) const
 {
     Bfield[0] = Bfield[1] = Bfield[2] = Bfield[3] = Bfield[4] = Bfield[5] = 0.0;
-    G4float dmesh= 7.0 ;
+   // G4float dmesh= 7.0 ;
 
     // protect against Geant4 bug that calls us with point[] NaN.
     if(Point[0] != Point[0]) return;
      if(IsInBoundingBox(Point)){
         //static ofstream ofile("MagneticField.txt",ios_base::out);
         //ofile<< "Point[2] = " <<Point[2]<< "Point[0] = " <<Point[0]<< "Point[1] = " <<Point[1]<<"\r\n"<<endl;
-   /* Bfield[0] = 0.3*tesla;
+    Bfield[0] = 1.0*tesla;
     Bfield[1] = 0.;
     Bfield[2] = 0.;
 
-   if(fabs(Point[0]-x[60])<dmesh&&fabs(Point[1]-y[60])<dmesh&&fabs(Point[2]-z[60])<dmesh){
+/*   if(fabs(Point[0]-x[60])<dmesh&&fabs(Point[1]-y[60])<dmesh&&fabs(Point[2]-z[60])<dmesh){
         static ofstream ofile("MagneticField.txt",ios_base::out);
         ofile<< "Point[2] = " <<Point[2]<< "Point[0] = " <<Point[0]<< "Point[1] = " <<Point[1]<<"\r\n"<<endl;
     }*/
-
+/*
        for(G4int i=0; i<8311;i++){
             if(fabs(Point[0]-x[i])<dmesh&&fabs(Point[1]-y[i])<dmesh&&fabs(Point[2]-z[i])<dmesh){
                 //static ofstream ofile("MagneticField.txt",ios_base::out);
@@ -325,7 +325,7 @@ void F01FieldSetup::GetFieldValue(const G4double Point[3],G4double* Bfield) cons
 
                 break;
             }
-        }
+        }*/
      }
 }
 

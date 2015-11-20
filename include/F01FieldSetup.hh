@@ -93,7 +93,7 @@ public:
   ///  global bounding box - global coordinates.
   bool IsInBoundingBox(const G4double point[4]) const
   {
-    if(point[2] < -75 || point[2] > 80) return false;
+    if(point[2] < -75 || point[2] > -15) return false;
     if(point[0] < -20 || point[0] > 20) return false;
     if(point[1] < -105 || point[1] > 105) return false;
     return true;
